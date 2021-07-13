@@ -94,6 +94,21 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
         g.setColor(Color.red);
         g.fillOval(ballX, 0, 30, 30);
         g.drawImage(myimage, spaceX, 550, myimage.getWidth()/4, myimage.getHeight()/4, this);
+        
+        //Fire
+        for(Fire fire : fires){
+            
+            if(fire.getY() < 0){
+                fires.remove(fire);
+            }
+        }
+        
+        g.setColor(Color.ORANGE);
+        
+        for(Fire fire : fires){
+            g.fillRect(fire.getX(), fire.getY(), 7, 15);
+        }
+        
     }
 
     @Override
@@ -104,19 +119,20 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
     
     
     
-    // KEYBOARD OPERATIONS
+    
     @Override
     public void keyTyped(KeyEvent e) {
       
         
     }
-
+   
+    // KEYBOARD OPERATIONS
     @Override
     public void keyPressed(KeyEvent e) {
         int myKey = e.getKeyCode();
         
-     
-        if(myKey == KeyEvent.VK_LEFT){          //LEFT KEY
+         //LEFT KEY
+        if(myKey == KeyEvent.VK_LEFT){          
             
                 if(spaceX <=-30){
                     spaceX =-30;
@@ -124,7 +140,9 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
                     spaceX -= directionSpaceX;
                 }
         }
-        else if ( myKey == KeyEvent.VK_RIGHT){  //RIGHT KEY
+        
+        //RIGHT KEY
+        else if ( myKey == KeyEvent.VK_RIGHT){  
             
             if(spaceX >= 770){
                 spaceX = 770;
@@ -132,16 +150,34 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
                 spaceX += directionSpaceX;
             }
         }
+        
+        // FIRE SPACE KEY
+        else if(myKey == KeyEvent.VK_SPACE || myKey == KeyEvent.VK_CONTROL){
+            fires.add(new Fire(spaceX+70, 560));
+            countFire++;
+            
+        }
     }
 
+    
+    
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
 
+    
+    // BALL COORDINATE
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        //when you fire  -> fire Y Coordinate decrease
+        for(Fire fire : fires){
+            fire.setY(fire.getY() - fireY);
+        }
+        
+        
+        
         ballX += ballDirectionX;
         
         if(ballX >= 865){
@@ -152,7 +188,7 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
             ballDirectionX = -ballDirectionX;
         }
         
-        repaint();
+        repaint();  
         
     }
     
