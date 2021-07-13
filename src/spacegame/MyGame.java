@@ -3,6 +3,7 @@ package spacegame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -69,6 +71,21 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
     private int directionSpaceX = 20;
     
     
+    // WAS THERE  CRASH 
+    public boolean wasCrash(){
+        for(Fire fire : fires){
+            
+            if( new Rectangle(fire.getX(), fire.getY(),7,15).intersects(new Rectangle(ballX,0,20,20))  ){
+                return true;
+            }     
+            
+        }
+        
+        return false;
+    }
+    
+    
+    
     
     // CONSTRUCTOR
     public MyGame(){
@@ -90,6 +107,7 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
     @Override
     public void paint(Graphics g) {
         super.paint(g); 
+        passingTime += 5;
         
         g.setColor(Color.red);
         g.fillOval(ballX, 0, 30, 30);
@@ -97,7 +115,7 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
         
         //Fire
         for(Fire fire : fires){
-            
+             
             if(fire.getY() < 0){
                 fires.remove(fire);
             }
@@ -108,6 +126,17 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
         for(Fire fire : fires){
             g.fillRect(fire.getX(), fire.getY(), 7, 15);
         }
+        
+        // CRASH
+        if(wasCrash()){
+            timer.stop();
+            String message = "You WON...\n"+"Consume Fire: "+countFire+
+                    "\nPassing Time : "+ (passingTime / 1000.0)+"s";
+            
+            JOptionPane.showMessageDialog(this, message);
+            System.exit(0);
+        }
+        
         
     }
 
