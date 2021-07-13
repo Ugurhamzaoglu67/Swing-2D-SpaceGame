@@ -65,7 +65,7 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
     private int ballDirectionX = 2;
     
     //SPACE SHIP
-    private int spaceX = 0;
+    private int spaceX = -30;
     private int directionSpaceX = 20;
     
     
@@ -107,12 +107,31 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
     // KEYBOARD OPERATIONS
     @Override
     public void keyTyped(KeyEvent e) {
-
+      
+        
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        int myKey = e.getKeyCode();
+        
+     
+        if(myKey == KeyEvent.VK_LEFT){          //LEFT KEY
+            
+                if(spaceX <=-30){
+                    spaceX =-30;
+                }else {
+                    spaceX -= directionSpaceX;
+                }
+        }
+        else if ( myKey == KeyEvent.VK_RIGHT){  //RIGHT KEY
+            
+            if(spaceX >= 770){
+                spaceX = 770;
+            }else {
+                spaceX += directionSpaceX;
+            }
+        }
     }
 
     @Override
