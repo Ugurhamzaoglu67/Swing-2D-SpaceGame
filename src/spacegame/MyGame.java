@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 // FIRE CLASS 
@@ -50,6 +51,8 @@ class Fire {
 
 
 public class MyGame extends JPanel implements KeyListener, ActionListener{
+    
+    Timer timer = new Timer(5,this);
 
     private int passingTime = 0;
     private int countFire = 0;
@@ -78,6 +81,7 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
 
         setBackground(Color.BLACK);
         
+        timer.start();  // 5 ms'de bir,actionPerformed() bu metod kendiliğinden çalışıcak.
         
         
     }
@@ -88,7 +92,7 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
         super.paint(g); 
         
         g.setColor(Color.red);
-        g.fillOval(ballX, 0, 20, 20);
+        g.fillOval(ballX, 0, 30, 30);
         g.drawImage(myimage, spaceX, 550, myimage.getWidth()/4, myimage.getHeight()/4, this);
     }
 
@@ -119,6 +123,18 @@ public class MyGame extends JPanel implements KeyListener, ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        ballX += ballDirectionX;
+        
+        if(ballX >= 865){
+            ballDirectionX = -ballDirectionX;
+        }
+        
+        if(ballX <= 0){
+            ballDirectionX = -ballDirectionX;
+        }
+        
+        repaint();
+        
     }
     
 }
